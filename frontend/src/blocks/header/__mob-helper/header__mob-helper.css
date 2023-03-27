@@ -1,0 +1,8 @@
+.header__mob-helper {
+  width: 100%;
+  display: block;
+}
+@media screen and (max-width: 720px) {
+  .header__mob-helper {
+  }
+}

@@ -1,0 +1,9 @@
+.element__like_active {
+    background-size: contain;
+    background: url("../../../../images/like-active.svg") no-repeat 100% 100%;
+    opacity: 1;
+}
+
+.element__like_active:hover {
+    opacity: 0.5;
+}

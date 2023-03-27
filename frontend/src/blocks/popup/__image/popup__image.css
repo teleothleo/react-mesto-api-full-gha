@@ -1,0 +1,9 @@
+.popup__image {
+    padding: 0;
+    justify-self: center;
+    align-self: center;
+    max-width: 75vw;
+    max-height: 75vh;
+    cursor: pointer;
+    opacity: 1;
+}

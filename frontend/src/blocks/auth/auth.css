@@ -1,0 +1,18 @@
+.auth {
+  margin: 0 auto;
+  padding-bottom: 80px;
+  width: 358px;
+  height: calc(100vh - 225px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 720px) {
+  .auth {
+    width: 100%;
+    padding: 40px 30px 40px 30px;
+    height: calc(100vh - 188px);
+  }
+}

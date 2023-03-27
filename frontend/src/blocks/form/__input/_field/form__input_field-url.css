@@ -1,0 +1,9 @@
+.form__input_field-url {
+    margin-top: 0px;
+}
+
+@media screen and (max-width: 665px) {
+    .form__input_field-url {
+        margin-top: 30px;
+    }
+}

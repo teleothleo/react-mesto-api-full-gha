@@ -1,0 +1,13 @@
+.form__submit-auth {
+  margin: 0 auto 15px 0;
+  background: #ffffff;
+  color: #000000;
+}
+
+@media screen and (max-width: 665px) {
+  .form__submit-auth {
+    font-size: 16px;
+    line-height: 19px;
+    margin-bottom: 20px;
+  }
+}

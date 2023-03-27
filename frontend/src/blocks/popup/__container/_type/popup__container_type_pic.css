@@ -1,0 +1,5 @@
+.popup__container_type_pic {
+    width: min-content;
+    display: flex;
+    margin: 0 auto;
+}

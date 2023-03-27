@@ -1,0 +1,12 @@
+.header__auth-box {
+  display: inline-block;
+
+}
+@media screen and (max-width: 720px) {
+    .header__auth-box .header__email {
+      display: none;
+    }
+    .header__auth-box .header__log-out {
+      display: none;
+    }
+}

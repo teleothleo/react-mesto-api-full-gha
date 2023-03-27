@@ -1,0 +1,22 @@
+.header__auth {
+  font-family: "Inter";
+  margin-top: 4px;
+  padding: 0;
+  height: min-content;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.header__auth:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 720px) {
+  .header__auth {
+    font-size: 14px;
+  }
+}

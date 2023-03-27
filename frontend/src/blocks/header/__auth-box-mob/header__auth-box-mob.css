@@ -1,0 +1,7 @@
+.header__auth-box-mob {
+   display: none;
+   flex-direction: column;
+   padding: 40px 0 40px 0;
+   box-sizing: border-box;
+   align-items: center;
+}

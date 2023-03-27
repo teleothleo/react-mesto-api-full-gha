@@ -1,0 +1,16 @@
+.form__submit_invalid {
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    color: black;
+    opacity: 0.2;
+    border-radius: 2px;
+}
+
+.form__submit_invalid:hover {
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    color: black;
+    opacity: 0.2;
+    border-radius: 2px;
+    cursor: default;
+}

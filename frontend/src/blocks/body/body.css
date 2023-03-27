@@ -1,0 +1,16 @@
+.body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    min-height: 100vh;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;  
+}
+
+/* Needed for testing markup with Pixelperfect */
+/* body::-webkit-scrollbar {
+    display: none;
+} */

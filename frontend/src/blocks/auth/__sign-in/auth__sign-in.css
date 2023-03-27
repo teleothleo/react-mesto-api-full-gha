@@ -1,0 +1,18 @@
+.auth__sign-in {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.auth__sign-in:hover {
+  text-decoration: underline;
+  text-decoration-color: #ccc;
+}

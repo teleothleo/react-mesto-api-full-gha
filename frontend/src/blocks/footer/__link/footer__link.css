@@ -1,0 +1,18 @@
+.footer__link {
+    padding: 67px 0 60px 0;
+    margin: 0;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-decoration: none;
+    color: #545454;
+}
+
+@media screen and (max-width: 720px) {
+.footer__link {
+    padding-top: 50px;
+    padding-bottom: 0px;
+    font-size: 14px;
+    line-height: 17px;
+}
+}
