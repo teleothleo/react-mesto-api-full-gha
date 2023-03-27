@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middleware/auth');
@@ -14,6 +15,7 @@ const app = express();
 mongoose.set('strictQuery', false);
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 mongoose.connect(URL);
 
