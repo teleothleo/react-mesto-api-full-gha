@@ -6,7 +6,7 @@ import editIcon from '../images/edit.svg';
 const Main = (props) => {
 
    const currentUser = React.useContext(CurrentUserContext);
-   console.log("MAIN: " + props);
+   // console.log("MAIN: ", props);
 
    return (
       <main className="content">

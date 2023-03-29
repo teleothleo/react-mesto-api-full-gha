@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api';
 import ProtectedRoute from './ProtectedRoute';
@@ -16,6 +16,7 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import Auth from '../utils/Auth';
+import { getCookie, removeCookie, saveCookie } from "../utils/cookies";
 
 const App = () => {
 
@@ -54,7 +55,7 @@ const App = () => {
     const res = auth.signUp();
     try {
       await res.then((res) => {
-        console.log("APP: " + res);
+        console.log("APP: ", res);
         navigate("/sign-in", { replace: true });
         setInfoTooltipPopupIsOpen(true);
         setIsSandwichOpened(false);
@@ -78,9 +79,11 @@ const App = () => {
     const res = auth.signIn();
     try {
       await res.then((res) => {
-        console.log(res);
-        setEmail(email);
-        localStorage.setItem("token", res.token);
+        console.log('App.js signIn res:', res);
+        saveCookie("token", res.token)
+        saveCookie("_id", res.user._id)
+        setCurrentUser(res.user);
+        setEmail(res.user.email);
         setLoggedIn(true);
         setIsSandwichOpened(false);
         checkToken() && navigate("/", { replace: true });
@@ -93,16 +96,16 @@ const App = () => {
     }
   }
 
-  function checkToken() {
+  async function checkToken() {
     setIsSandwichOpened(false);
-    const jwt = localStorage.getItem("token");
-    console.log(jwt);
+    const jwt = getCookie('token');
+    const _id = getCookie("_id");
+    console.log(`checkToken:\n_id: ${_id}\njwt: ${jwt}`);
     if (jwt) {
       const auth = new Auth({ jwt });
       try {
         auth.authorize().then((res) => {
           setLoggedIn(true)
-          setEmail(res.data.email);
           navigate("/", { replace: true });
           setIsSandwichOpened(false);
           console.log("Your authorization was successful.");
@@ -117,8 +120,10 @@ const App = () => {
 
   }
 
+
   function handleLogOutClickInHeader() {
-    localStorage.removeItem("token");
+    removeCookie("token")
+    removeCookie("_id")
     navigate("/sign-in", { replace: true });
     setIsSandwichOpened(false);
   }
@@ -186,6 +191,7 @@ const App = () => {
   function getUserInfo() {
     api.getUserInfo()
       .then((userData) => {
+        console.log("App.js", userData);
         setCurrentUser(userData);
       })
       .catch(err => {

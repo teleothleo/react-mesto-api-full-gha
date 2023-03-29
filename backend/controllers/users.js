@@ -9,6 +9,7 @@ const ErrorUnauthorized = require('../utils/ErrorUnauthorized');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
+  console.log('users.js', req.body);
   return User.findOne({ email })
     .select('+password')
     .then(async (user) => {
@@ -26,7 +27,7 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
       });
-      res.send({ email });
+      res.send({ token, user });
     })
     .catch(next);
 };

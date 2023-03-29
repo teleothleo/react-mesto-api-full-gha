@@ -1,12 +1,16 @@
+import { getCookie } from "./cookies";
+
 class Auth {
-   constructor({ jwt, password, email }) {
-      this._baseUrl = 'https://auth.nomoreparties.co';
+   constructor({ token, password, email }) {
+      this._baseUrl = 'http://localhost:3000';
+      this._token = getCookie('token');
+      this._userId = getCookie('_id');
       this._headers = {
          'Content-Type': 'application/json',
       };
       this._headersForAuthorization = {
          'Content-Type': 'application/json',
-         "Authorization": `Bearer ${jwt}`
+         'Authorization': `Bearer ${token}`,
       };
       this._body = JSON.stringify({
          "password": password,
@@ -33,9 +37,15 @@ class Auth {
    }
 
    authorize() {
+      console.log(`Auth.js:\nuserId: ${this._userId}\token: ${this._token}`);
       return fetch(`${this._baseUrl}/users/me`, {
          method: 'GET',
-         headers: this._headersForAuthorization,
+         headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this._token}`,
+            '_id': this._userId,
+         }
+
       })
          .then(this._checkResponse);
    }
