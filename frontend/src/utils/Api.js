@@ -3,6 +3,7 @@ import { getCookie } from "./cookies";
 class Api {
    constructor() {
       this._baseUrl = 'http://localhost:3000';
+      // this._baseUrl = 'https://api.mestoprj.students.nomoredomains.work';
       this._headers = {
          'Content-Type': 'application/json'
       };

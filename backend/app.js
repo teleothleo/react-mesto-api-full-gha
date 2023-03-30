@@ -13,6 +13,7 @@ const ErrorNotFound = require('./utils/ErrorNotFound');
 
 const { PORT = 3000, URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
+app.use(cors());
 
 const apiLogger = bunyan.createLogger({
   name: 'API requests logger',
@@ -35,7 +36,6 @@ app.use((req, res, next) => {
 mongoose.set('strictQuery', false);
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
 
 mongoose.connect(URL);
 
