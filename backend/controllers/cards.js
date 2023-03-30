@@ -4,11 +4,10 @@ const ErrorNotFound = require('../utils/ErrorNotFound');
 const ErrorForbidden = require('../utils/ErrorForbidden');
 
 module.exports.getCards = (req, res, next) => {
-  console.log(req.body);
   Card.find({})
     .populate(['owner', 'likes'])
     .then((cards) => {
-      console.log(cards);
+      // console.log('cards contoler getCards: ', cards);
       res.send(cards);
     })
     .catch(next);
@@ -16,10 +15,10 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
-  console.log(name, link);
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => {
+      console.log('createCard: ', name, link);
       res.send(card);
     })
     .catch((err) => {
@@ -33,6 +32,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => Card.findById(req.params.cardId)
   .then((card) => {
+    console.log('deleteCard: ', req.headers, req.params);
     if (!card) {
       next(new ErrorNotFound('Card not found'));
       return;

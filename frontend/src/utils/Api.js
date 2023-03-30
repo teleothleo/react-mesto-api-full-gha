@@ -2,37 +2,36 @@ import { getCookie } from "./cookies";
 
 class Api {
    constructor() {
-      this._token = getCookie('token');
-      this._userId = getCookie('id');
       this._baseUrl = 'http://localhost:3000';
       this._headers = {
          'Content-Type': 'application/json'
       };
-      this._headersWithToken = {
-         'Content-Type': 'application/json',
-         'Authorization': `Bearer ${this._token}`,
-      };
    }
 
    getUserInfo() {
-      if (!this._token || !this._userId) {
-         this._updateCookies();
-      }
-      console.log(`Api.js:\nuserId: ${this._userId}\ntoken: ${this._token}`);
+      const token = getCookie('token');
+      const userId = getCookie('_id');
+      // console.log(`Api.js:\nuserId: ${this._userId}\ntoken: ${this._token}`);
       return fetch(`${this._baseUrl}/users/me`, {
          headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this._token}`,
-            '_id': this._userId,
+            'Authorization': `Bearer ${token}`,
+            '_id': userId,
          }
       })
          .then(this._checkResponse);
    }
 
    setUserInfo(userData) {
+      const userId = getCookie('_id');
+      const token = getCookie('token');
       return fetch(`${this._baseUrl}/users/me`, {
          method: 'PATCH',
-         headers: this._headersWithToken,
+         headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            '_id': userId,
+         },
          body: JSON.stringify({
             name: userData.name,
             about: userData.about
@@ -42,22 +41,29 @@ class Api {
    }
 
    fetchCards() {
-      if (!this._token || !this._userId) {
-         this._updateCookies();
-      }
+      const token = getCookie('token');
       return fetch(`${this._baseUrl}/cards`, {
-         headers: this._headersWithToken,
+         headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+         }
       })
          .then(this._checkResponse);
    }
 
    addNewCard(inputValues) {
+      const userId = getCookie("userId");
+      const token = getCookie('token');
       return fetch(`${this._baseUrl}/cards`, {
          method: 'POST',
-         headers: this._headersWithToken,
+         headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+             '_id': userId
+         },
          body: JSON.stringify({
             name: inputValues.place,
-            link: inputValues.url
+            link: inputValues.url,
          })
       })
          .then(this._checkResponse);
@@ -65,24 +71,35 @@ class Api {
    }
 
    deleteCard(id) {
+      const token = getCookie('token');
       return fetch(`${this._baseUrl}/cards/${id}`, {
          method: 'DELETE',
-         headers: this._headers,
+         headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+         },
       })
          .then(this._checkResponse);
    }
 
    changeLikeCardStatus(id, isLiked) {
+      const token = getCookie('token');
       if (isLiked) {
          return fetch(`${this._baseUrl}/cards/${id}/likes`, {
             method: 'PUT',
-            headers: this._headersWithToken,
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${token}`,
+            },
          })
             .then(this._checkResponse);
       } else {
          return fetch(`${this._baseUrl}/cards/${id}/likes`, {
             method: 'DELETE',
-            headers: this._headersWithToken,
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${token}`,
+            },
          })
             .then(this._checkResponse);
       }
@@ -97,23 +114,18 @@ class Api {
    }
 
    updateAvatar(url) {
+      const token = getCookie('token');
       return fetch(`${this._baseUrl}/users/me/avatar`, {
          method: 'PATCH',
-         headers: this._headersWithToken,
+         headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+         },
          body: JSON.stringify({
             avatar: url,
          })
       })
          .then(this._checkResponse);
-   }
-
-   _updateCookies() {
-      this._token = getCookie('token');
-      this._userId = getCookie('id');
-      this._headersWithToken = {
-         'Content-Type': 'application/json',
-         'Authorization': `Bearer ${this._token}`,
-      };
    }
 
    _checkResponse(res) {

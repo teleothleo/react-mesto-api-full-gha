@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -6,6 +7,8 @@ const ErrorBadRequest = require('../utils/ErrorBadRequest');
 const ErrorNotFound = require('../utils/ErrorNotFound');
 const ErrorConflict = require('../utils/ErrorConflict');
 const ErrorUnauthorized = require('../utils/ErrorUnauthorized');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -22,7 +25,12 @@ module.exports.login = (req, res, next) => {
         next(new ErrorUnauthorized('Either email or password is/are wrong'));
         return;
       }
-      const token = jwt.sign({ _id: user._id }, 'dev-key', { expiresIn: '7d' });
+      console.log('jwtSecret: ', NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
       res.cookie('token', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
@@ -33,6 +41,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.getMe = (req, res, next) => {
+  console.log('getMe: ', req.user);
   User.findById(req.user._id)
     .then((user) => res.send(user))
     .catch(next);
@@ -51,7 +60,8 @@ module.exports.getUserById = (req, res, next) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        throw new ErrorNotFound('User not found');
+        next(ErrorNotFound('User not found'));
+        return;
       }
       res.send(user);
     })
@@ -64,10 +74,15 @@ module.exports.getUserById = (req, res, next) => {
     });
 };
 
-module.exports.createUser = (req, res, next) => {
+module.exports.createUser = async (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
+  const userDuplicate = await User.findOne({ email });
+  if (userDuplicate) {
+    next(new ErrorConflict('User with the same email alrealy exists'));
+    return;
+  }
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({
@@ -105,7 +120,7 @@ module.exports.updateUser = (req, res, next) => {
         next(new ErrorNotFound('Wrong user ID'));
         return;
       }
-      console.log(user);
+      console.log('user.js updateUser: ', user);
       res.send(user);
     })
     .catch((err) => {

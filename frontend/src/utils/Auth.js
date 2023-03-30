@@ -37,7 +37,7 @@ class Auth {
    }
 
    authorize() {
-      console.log(`Auth.js:\nuserId: ${this._userId}\token: ${this._token}`);
+      // console.log(`Auth.js:\nuserId: ${this._userId}\ntoken: ${this._token}`);
       return fetch(`${this._baseUrl}/users/me`, {
          method: 'GET',
          headers: {

@@ -1,12 +1,12 @@
 export function getCookie(cookieName) {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith(cookieName + '=')) {
-      return cookie.substring(cookieName.length + 1);
-    }
+  const cookiesArr = document.cookie.split(';');
+  const cookie = cookiesArr.find(cookie => cookie.trim().startsWith(`${cookieName}=`));
+  if (cookie) {
+    const cookieRes = cookie.split('=')[1];
+    return cookieRes
+  } else {
+    return null;
   }
-  return null;
 }
 
 export function removeCookie(cookieName) {

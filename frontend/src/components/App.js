@@ -63,7 +63,7 @@ const App = () => {
         setInfoTooltipState(true);
       });
     } catch (error) {
-      console.log("APP catch: " + error);
+      console.log("App.js catch: ", error);
       setInfoTooltipPopupIsOpen(true);
       setInfoTooltipMessage("Что-то пошло не так!\nПопробуйте ещё раз.");
       setInfoTooltipState(false);
@@ -81,9 +81,10 @@ const App = () => {
       await res.then((res) => {
         console.log('App.js signIn res:', res);
         saveCookie("token", res.token)
-        saveCookie("_id", res.user._id)
+        saveCookie("userId", res.user._id)
+        saveCookie("email", email)
         setCurrentUser(res.user);
-        setEmail(res.user.email);
+        setEmail(email);
         setLoggedIn(true);
         setIsSandwichOpened(false);
         checkToken() && navigate("/", { replace: true });
@@ -99,8 +100,8 @@ const App = () => {
   async function checkToken() {
     setIsSandwichOpened(false);
     const jwt = getCookie('token');
-    const _id = getCookie("_id");
-    console.log(`checkToken:\n_id: ${_id}\njwt: ${jwt}`);
+    const _id = getCookie("userId");
+    // console.log(`checkToken:\nuserId: ${_id}\ntoken: ${jwt}`);
     if (jwt) {
       const auth = new Auth({ jwt });
       try {
@@ -108,6 +109,7 @@ const App = () => {
           setLoggedIn(true)
           navigate("/", { replace: true });
           setIsSandwichOpened(false);
+          setEmail(getCookie("email"));
           console.log("Your authorization was successful.");
           return true;
         });
@@ -120,10 +122,9 @@ const App = () => {
 
   }
 
-
   function handleLogOutClickInHeader() {
     removeCookie("token")
-    removeCookie("_id")
+    removeCookie("userId")
     navigate("/sign-in", { replace: true });
     setIsSandwichOpened(false);
   }
@@ -229,6 +230,7 @@ const App = () => {
       })
       .finally(() => {
         closeAllPopups();
+        fetchCards();
       })
 
   }

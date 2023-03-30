@@ -39,13 +39,6 @@ app.use(cors());
 
 mongoose.connect(URL);
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Headers', 'Cookie');
-  next();
-});
-
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateSignUp, createUser);
 
@@ -55,7 +48,8 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use((err, req, res, next) => {
-  errorLogger({ error: err });
+  console.error(err);
+  errorLogger.error({ error: err });
   next(new ErrorNotFound('Lost your way?'));
 });
 
@@ -63,7 +57,7 @@ app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
-  errorLogger({ error: err });
+  errorLogger.error({ error: err.message });
   res.status(statusCode).send({
     message: statusCode === ERROR_CODE_INTERNAL_SERVER_ERROR ? 'Server-side error' : message,
   });

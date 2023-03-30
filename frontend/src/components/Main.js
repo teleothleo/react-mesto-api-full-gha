@@ -34,7 +34,7 @@ const Main = (props) => {
 
          <section className="elements">
             {
-               props.cards.map((card) => (
+               props.cards.slice().reverse().map((card) => (
                   <Card
                      key={card._id}
                      card={card}
