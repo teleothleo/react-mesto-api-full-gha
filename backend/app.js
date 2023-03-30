@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const bunyan = require('bunyan');
@@ -14,6 +16,20 @@ const ErrorNotFound = require('./utils/ErrorNotFound');
 const { PORT = 3000, URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
 app.use(cors());
+
+// Handling logs
+const logDir = path.join(__dirname, 'logs');
+const apiLoggerFile = path.join(logDir, 'api_requests.log');
+const errorLoggerFile = path.join(logDir, 'errors.log');
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
+if (!fs.existsSync(apiLoggerFile)) {
+  fs.writeFileSync(apiLoggerFile, '');
+}
+if (!fs.existsSync(errorLoggerFile)) {
+  fs.writeFileSync(errorLoggerFile, '');
+}
 
 const apiLogger = bunyan.createLogger({
   name: 'API requests logger',
@@ -32,6 +48,7 @@ app.use((req, res, next) => {
   });
   next();
 });
+// End
 
 mongoose.set('strictQuery', false);
 app.use(bodyParser.json());

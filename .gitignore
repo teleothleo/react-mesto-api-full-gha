@@ -30,6 +30,7 @@ yarn-error.log*
 /frontend/pp-src/
 
 # Logs
+/logs
 *.log
 npm-debug.log*
 
