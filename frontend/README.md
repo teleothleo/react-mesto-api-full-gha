@@ -1,7 +1,22 @@
-# Здесь будет ваш проект на Реакте с авторизацией и регистрацией
+[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
+# Проект Mesto фронтенд + бэкенд
+Ссылка на проект:
+https://github.com/careverca/express-mesto-gha
 
-Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов. 
+## Директории
 
-Все запросы на авторизацию, регистрацию и проверку токена должны работать через сервис `https://auth.nomoreparties.co`. Остальные запросы, не относящиеся к этой проектной работе могут быть к бэкенду из предыдущих спринтов.
+`/routes` — папка с файлами роутера  
+`/controllers` — папка с файлами контроллеров пользователя и карточки   
+`/models` — папка с файлами описания схем пользователя и карточки  
+  
+Остальные директории вспомогательные, создаются при необходимости разработчиком
 
-Успехов!
+## Запуск проекта
+
+`npm run start` — запускает сервер   
+`npm run dev` — запускает сервер с hot-reload
+
+## Где меня найти
+IP `158.160.58.158` 
+Frontend  https://mesto-project.students.nomoredomains.work
+Backend  https://api.mestoprj.students.nomoredomains.work

@@ -7,9 +7,6 @@
 Адрес репозитория: https://github.com/...
 
 ## Ссылки на проект
-
-IP-адрес x.x.x.x
-
-Frontend https://...
-
-Backend https://...
+IP `158.160.58.158` 
+Frontend  https://mesto-project.students.nomoredomains.work
+Backend  https://api.mestoprj.students.nomoredomains.work
