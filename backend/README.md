@@ -15,3 +15,8 @@ https://github.com/careverca/express-mesto-gha
 
 `npm run start` — запускает сервер   
 `npm run dev` — запускает сервер с hot-reload
+
+## Где меня найти
+IP `158.160.58.158` 
+Frontend  https://mesto-project.students.nomoredomains.work
+Backend  https://api.mestoprj.students.nomoredomains.work

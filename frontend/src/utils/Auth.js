@@ -2,8 +2,8 @@ import { getCookie } from "./cookies";
 
 class Auth {
    constructor({ token, password, email }) {
-      this._baseUrl = 'http://localhost:3000';
-      // this._baseUrl = 'https://api.mestoprj.students.nomoredomains.work';
+      // this._baseUrl = 'http://localhost:3000';
+      this._baseUrl = 'https://api.mestoprj.students.nomoredomains.work';
       this._token = getCookie('token');
       this._userId = getCookie('_id');
       this._headers = {
