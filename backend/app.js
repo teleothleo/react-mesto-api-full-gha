@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const { errors } = require('celebrate');
 const cors = require('cors');
 const bunyan = require('bunyan');
 const cookieParser = require('cookie-parser');
+const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middleware/auth');
-const { ERROR_CODE_INTERNAL_SERVER_ERROR } = require('./utils/constants');
 const { validateLogin, validateSignUp } = require('./middleware/validation-headers');
 const ErrorNotFound = require('./utils/ErrorNotFound');
+const { ERROR_CODE_INTERNAL_SERVER_ERROR } = require('./utils/constants');
 
 const { PORT = 3000, URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
