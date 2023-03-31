@@ -17,6 +17,7 @@ const { PORT = 3000, URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
 app.use(cors());
 
+// Provoking git tests..
 // Handling logs
 const logDir = path.join(__dirname, 'logs');
 const requestLoggerFile = path.join(logDir, 'request.log');
