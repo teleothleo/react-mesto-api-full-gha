@@ -79,13 +79,10 @@ app.patch('/404', (req, res, next) => {
 });
 
 app.use(auth);
-
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use(errors());
-
-app.use((err, req, res, next) => {
+app.use('*', (req, res, next) => {
   const errorNotFound = new ErrorNotFound('Lost your way?');
   errorLogger.error({
     error: errorNotFound,
@@ -97,6 +94,7 @@ app.use((err, req, res, next) => {
   next(errorNotFound);
 });
 
+app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
   const errMessage = statusCode === ERROR_CODE_INTERNAL_SERVER_ERROR ? 'Server-side error' : message;
