@@ -19,13 +19,13 @@ app.use(cors());
 
 // Handling logs
 const logDir = path.join(__dirname, 'logs');
-const apiLoggerFile = path.join(logDir, 'api_requests.log');
-const errorLoggerFile = path.join(logDir, 'errors.log');
+const requestLoggerFile = path.join(logDir, 'request.log');
+const errorLoggerFile = path.join(logDir, 'error.log');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
-if (!fs.existsSync(apiLoggerFile)) {
-  fs.writeFileSync(apiLoggerFile, '');
+if (!fs.existsSync(requestLoggerFile)) {
+  fs.writeFileSync(requestLoggerFile, '');
 }
 if (!fs.existsSync(errorLoggerFile)) {
   fs.writeFileSync(errorLoggerFile, '');
@@ -64,6 +64,10 @@ app.get('/crash-test', () => {
 
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateSignUp, createUser);
+app.patch('/404', (req, res, next) => {
+  // console.error(err.message);
+  next(new ErrorNotFound('Lost your way?'));
+});
 
 app.use(auth);
 
