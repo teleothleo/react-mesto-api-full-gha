@@ -41,11 +41,15 @@ module.exports.deleteCard = (req, res, next) => Card.findById(req.params.cardId)
       next(new ErrorForbidden('You may only remove your own cards'));
       return;
     }
-    card.remove().then(() => res.send({ message: 'Card was deleted successfully' }));
+    card
+      .remove()
+      .then(() => res.send({ message: 'Card was deleted successfully' }))
+      .catch(next);
   })
   .catch((err) => {
     if (err.name === 'CastError') {
       next(new ErrorBadRequest('Incorrect id passed'));
+      return;
     }
     next(err);
   });
@@ -63,6 +67,7 @@ module.exports.likeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new ErrorBadRequest('Incorrect id passed'));
+        return;
       }
       next(err);
     });
@@ -81,6 +86,7 @@ module.exports.dislikeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new ErrorBadRequest('Incorrect id passed'));
+        return;
       }
       next(err);
     });

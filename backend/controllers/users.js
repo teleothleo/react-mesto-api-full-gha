@@ -78,11 +78,6 @@ module.exports.createUser = async (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  const userDuplicate = await User.findOne({ email });
-  if (userDuplicate) {
-    next(new ErrorConflict('User with the same email alrealy exists'));
-    return;
-  }
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({
@@ -137,14 +132,14 @@ module.exports.updateUserAvatar = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        next(new ErrorNotFound('Wrong "avatar" key or "avatar" key is not filled out'));
+        next(new ErrorNotFound('User not found'));
         return;
       }
       res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ErrorBadRequest('Wrong keys or not all fiels are filled out'));
+        next(new ErrorBadRequest('Wrong keys or not all fields are filled out'));
       } else {
         next(err);
       }
