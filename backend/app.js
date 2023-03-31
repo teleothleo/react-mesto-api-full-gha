@@ -32,16 +32,16 @@ if (!fs.existsSync(errorLoggerFile)) {
   fs.writeFileSync(errorLoggerFile, '');
 }
 
-const apiLogger = bunyan.createLogger({
-  name: 'Requests logger',
+module.exports.requestLogger = bunyan.createLogger({
+  name: 'Request',
   streams: [{ path: './logs/request.log' }],
 });
-const errorLogger = bunyan.createLogger({
-  name: 'Error logger',
+module.exports.errorLogger = bunyan.createLogger({
+  name: 'Error',
   streams: [{ path: './logs/error.log' }],
 });
 app.use((req, res, next) => {
-  apiLogger.info({
+  this.requestLogger.info({
     method: req.method,
     url: req.url,
     headers: req.headers,
@@ -58,7 +58,7 @@ app.use(cookieParser());
 mongoose.connect(URL);
 
 app.get('/crash-test', () => {
-  errorLogger.error({ error: '/crash-test initialized' });
+  this.errorLogger.error({ error: '/crash-test initialized' });
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
@@ -67,7 +67,13 @@ app.get('/crash-test', () => {
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateSignUp, createUser);
 app.patch('/404', (req, res, next) => {
-  errorLogger.error({ error: '/404 route invoked' });
+  this.errorLogger.error({
+    error: '/404 route invoked',
+    method: req.method,
+    url: req.url,
+    headers: req.headers,
+    body: req.body,
+  });
   next(new ErrorNotFound('Lost your way?'));
 });
 
@@ -84,13 +90,26 @@ app.use((err, req, res, next) => {
   res.status(statusCode).send({
     message: errMessage,
   });
-  errorLogger.error({ error: errMessage });
+  this.errorLogger.error({
+    error: errMessage,
+    method: req.method,
+    url: req.url,
+    headers: req.headers,
+    body: req.body,
+  });
   next();
 });
 
 app.use((err, req, res, next) => {
-  errorLogger.error({ error: err });
-  next(new ErrorNotFound('Lost your way?'));
+  const errorNotFound = new ErrorNotFound('Lost your way?');
+  this.errorLogger.error({
+    error: errorNotFound,
+    method: req.method,
+    url: req.url,
+    headers: req.headers,
+    body: req.body,
+  });
+  next(errorNotFound);
 });
 
 app.listen(PORT, () => {
