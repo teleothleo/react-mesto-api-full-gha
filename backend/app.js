@@ -32,16 +32,16 @@ if (!fs.existsSync(errorLoggerFile)) {
   fs.writeFileSync(errorLoggerFile, '');
 }
 
-module.exports.requestLogger = bunyan.createLogger({
+const requestLogger = bunyan.createLogger({
   name: 'Request',
   streams: [{ path: './logs/request.log' }],
 });
-module.exports.errorLogger = bunyan.createLogger({
+const errorLogger = bunyan.createLogger({
   name: 'Error',
   streams: [{ path: './logs/error.log' }],
 });
 app.use((req, res, next) => {
-  this.requestLogger.info({
+  requestLogger.info({
     method: req.method,
     url: req.url,
     headers: req.headers,
@@ -58,7 +58,7 @@ app.use(cookieParser());
 mongoose.connect(URL);
 
 app.get('/crash-test', () => {
-  this.errorLogger.error({ error: '/crash-test initialized' });
+  errorLogger.error({ error: '/crash-test initialized' });
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
@@ -67,7 +67,7 @@ app.get('/crash-test', () => {
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateSignUp, createUser);
 app.patch('/404', (req, res, next) => {
-  this.errorLogger.error({
+  errorLogger.error({
     error: '/404 route invoked',
     method: req.method,
     url: req.url,
@@ -90,7 +90,7 @@ app.use((err, req, res, next) => {
   res.status(statusCode).send({
     message: errMessage,
   });
-  this.errorLogger.error({
+  errorLogger.error({
     error: errMessage,
     method: req.method,
     url: req.url,
@@ -102,7 +102,7 @@ app.use((err, req, res, next) => {
 
 app.use((err, req, res, next) => {
   const errorNotFound = new ErrorNotFound('Lost your way?');
-  this.errorLogger.error({
+  errorLogger.error({
     error: errorNotFound,
     method: req.method,
     url: req.url,
