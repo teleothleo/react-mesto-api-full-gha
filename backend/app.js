@@ -32,7 +32,7 @@ if (!fs.existsSync(errorLoggerFile)) {
 }
 
 const apiLogger = bunyan.createLogger({
-  name: 'API requests logger',
+  name: 'Requests logger',
   streams: [{ path: './logs/request.log' }],
 });
 const errorLogger = bunyan.createLogger({
@@ -57,6 +57,7 @@ app.use(cookieParser());
 mongoose.connect(URL);
 
 app.get('/crash-test', () => {
+  errorLogger.error({ error: '/crash-test initialized' });
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
@@ -65,7 +66,7 @@ app.get('/crash-test', () => {
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateSignUp, createUser);
 app.patch('/404', (req, res, next) => {
-  // console.error(err.message);
+  errorLogger.error({ error: '/404 route invoked' });
   next(new ErrorNotFound('Lost your way?'));
 });
 
@@ -78,15 +79,15 @@ app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
-  errorLogger.error({ error: err.message });
+  const errMessage = statusCode === ERROR_CODE_INTERNAL_SERVER_ERROR ? 'Server-side error' : message;
   res.status(statusCode).send({
-    message: statusCode === ERROR_CODE_INTERNAL_SERVER_ERROR ? 'Server-side error' : message,
+    message: errMessage,
   });
+  errorLogger.error({ error: errMessage });
   next();
 });
 
 app.use((err, req, res, next) => {
-  console.error(err);
   errorLogger.error({ error: err });
   next(new ErrorNotFound('Lost your way?'));
 });
