@@ -85,6 +85,18 @@ app.use('/cards', require('./routes/cards'));
 app.use(errors());
 
 app.use((err, req, res, next) => {
+  const errorNotFound = new ErrorNotFound('Lost your way?');
+  errorLogger.error({
+    error: errorNotFound,
+    method: req.method,
+    url: req.url,
+    headers: req.headers,
+    body: req.body,
+  });
+  next(errorNotFound);
+});
+
+app.use((err, req, res, next) => {
   const { statusCode = ERROR_CODE_INTERNAL_SERVER_ERROR, message } = err;
   const errMessage = statusCode === ERROR_CODE_INTERNAL_SERVER_ERROR ? 'Server-side error' : message;
   res.status(statusCode).send({
@@ -98,18 +110,6 @@ app.use((err, req, res, next) => {
     body: req.body,
   });
   next();
-});
-
-app.use((err, req, res, next) => {
-  const errorNotFound = new ErrorNotFound('Lost your way?');
-  errorLogger.error({
-    error: errorNotFound,
-    method: req.method,
-    url: req.url,
-    headers: req.headers,
-    body: req.body,
-  });
-  next(errorNotFound);
 });
 
 app.listen(PORT, () => {
