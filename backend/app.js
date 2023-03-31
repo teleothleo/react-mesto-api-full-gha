@@ -33,11 +33,11 @@ if (!fs.existsSync(errorLoggerFile)) {
 
 const apiLogger = bunyan.createLogger({
   name: 'API requests logger',
-  streams: [{ path: './logs/api_requests.log' }],
+  streams: [{ path: './logs/request.log' }],
 });
 const errorLogger = bunyan.createLogger({
   name: 'Error logger',
-  streams: [{ path: './logs/errors.log' }],
+  streams: [{ path: './logs/error.log' }],
 });
 app.use((req, res, next) => {
   apiLogger.info({
