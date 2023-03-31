@@ -60,7 +60,7 @@ module.exports.getUserById = (req, res, next) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        next(ErrorNotFound('User not found'));
+        next(new ErrorNotFound('User not found'));
         return;
       }
       res.send(user);
