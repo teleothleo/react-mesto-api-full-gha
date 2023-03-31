@@ -70,12 +70,6 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use((err, req, res, next) => {
-  console.error(err);
-  errorLogger.error({ error: err });
-  next(new ErrorNotFound('Lost your way?'));
-});
-
 app.use(errors());
 
 app.use((err, req, res, next) => {
@@ -85,6 +79,12 @@ app.use((err, req, res, next) => {
     message: statusCode === ERROR_CODE_INTERNAL_SERVER_ERROR ? 'Server-side error' : message,
   });
   next();
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  errorLogger.error({ error: err });
+  next(new ErrorNotFound('Lost your way?'));
 });
 
 app.listen(PORT, () => {
