@@ -19,7 +19,7 @@
 - MongodDB + Mongoose
 
 #### 📎 Ссылки
-IP `158.160.58.158` 
+- IP `158.160.58.158` 
 *[пояснение: сервер не оплачен, ссылки не работают. оплачу, как примусь за поиск работы]*
-Frontend https://mesto-project.students.nomoredomains.work
-Backend https://api.mestoprj.students.nomoredomains.work
+- Frontend https://mesto-project.students.nomoredomains.work
+- Backend https://api.mestoprj.students.nomoredomains.work
