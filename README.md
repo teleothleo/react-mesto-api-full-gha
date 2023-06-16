@@ -20,5 +20,6 @@
 
 #### 📎 Ссылки
 - IP `158.160.58.158` 
-- Frontend https://mesto-project.students.nomoredomains.work *[пояснение: сервер не оплачен, ссылки не работают. оплачу, как примусь за поиск работы]*
-- Backend https://api.mestoprj.students.nomoredomains.work
+- *[пояснение: сервер не оплачен, ссылки не работают. оплачу, как примусь за поиск 
+- [Frontend](https://mesto-project.students.nomoredomains.work)
+- [Backend](https://api.mestoprj.students.nomoredomains.work)
